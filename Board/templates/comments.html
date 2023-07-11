@@ -1,0 +1,36 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Комментарии
+{% endblock title %}
+
+
+
+
+{% block content %}
+
+{% if comments %}
+       <table>
+           <tr>
+               <td>Автор</td>
+               <td>Дата публикации</td>
+               <td>Комментарий</td>
+
+           </tr>
+           {% for comment in comments %}
+           <tr>
+
+               <td>{{ comment.author }}</td>
+               <td>{{ comment.datetime }}</td>
+               <td>{{ comment.text}}</td>
+
+           </tr>
+           {% endfor %}
+       </table>
+    {% else %}
+       <h2>Комментариев нет!</h2>
+    {% endif %}
+
+
+{% endblock content %}

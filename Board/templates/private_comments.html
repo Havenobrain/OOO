@@ -1,0 +1,43 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Комментарии
+{% endblock title %}
+
+
+
+
+{% block content %}
+
+<h1>Комментарии</h1>
+
+    <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Найти" />
+    </form>
+
+{% if comments %}
+       <table>
+           <tr>
+               <td>Автор</td>
+               <td>Дата публикации</td>
+               <td>Комментарий</td>
+
+           </tr>
+           {% for comment in comments %}
+           <tr>
+
+               <td>{{ comment.author }}</td>
+               <td>{{ comment.datetime }}</td>
+               <td>{{ comment.text}}</td>
+
+           </tr>
+           {% endfor %}
+       </table>
+    {% else %}
+       <h2>Комментариев нет!</h2>
+    {% endif %}
+
+
+{% endblock content %}

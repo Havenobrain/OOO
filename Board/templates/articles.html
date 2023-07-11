@@ -1,0 +1,95 @@
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Articles
+{% endblock title %}
+
+{% block content %}
+    <h1>Все объявления</h1>
+
+    {% if perms.Billboard.add_article %}
+    <a class="btn" href="{% url 'article_create' %}"><button class="btn btn-light btn-outline-danger">Добавить объявление</button></a>
+    {% endif %}
+
+    {% if articles %}
+        <table><thead><tr>
+                <td>Автор</td>
+                <td>Название</td>
+                <td>Категория</td>
+
+                {% if perms.Billboard.change_article or perms.Billboard.delete_article %}
+                <td>Действия</td>
+                {% endif %}
+
+            </tr> </thead>
+            <tbody class="infinite-container">
+            {% for article in articles %}
+            <tr class="infinite-item">
+                <td>{{ article.author }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.category }}</td>
+                <td>{{ article.text|truncatechars:20 }}</td>
+                <td>
+                    {% if article.upload %}
+                        <img src="{{ article.upload.url }}" alt="My Image" style="height: 300px; width: 300px">
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                </td>
+
+
+                <td>
+                    <a class="btn" href="{% url 'article_detail' pk=article.pk %}"><button class="btn btn-light btn-outline-danger">Посмотреть</button></a>
+                    {% if perms.Billboard.change_article %}
+                    <a class="btn" href="{% url 'article_update' pk=article.pk %}"><button class="btn btn-light btn-outline-danger">Изменить</button></a>
+                    {% endif %}
+                    {% if perms.Billboard.delete_article %}
+                    <a class="btn" href="{% url 'article_delete' pk=article.pk %}"><button class="btn btn-light btn-outline-danger">Удалить</button></a>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}</tbody>
+
+        </table>
+    {% else %}
+        <h2>Товаров нет!</h2>
+    {% endif %}
+
+
+{% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
+{% endif %}
+<div class="d-flex justify-content-center" style="display:none;">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<script src="/static/js/jquery-3.7.0.min.js"></script>
+<script src="/static/js/jquery.waypoints.min.js"></script>
+<script src="/static/js/infinite.min.js"></script>
+<script>
+    var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        handler: function(direction) {
+    },
+    offset: 'bottom-in-view',
+
+    onBeforePageLoad: function () {
+    $('.spinner-border').show();
+    },
+    onAfterPageLoad: function () {
+    $('.spinner-border').hide();
+    }
+
+    });
+</script>
+
+
+
+
+
+
+{% endblock content %}

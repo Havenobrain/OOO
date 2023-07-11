@@ -1,0 +1,29 @@
+
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Article
+{% endblock title %}
+{% block content %}
+<h1>{{ article.author }}</h1>
+<h1>{{ article.title }}</h1>
+<h1>{{ article.text }}</h1>
+<h1>{{ article.category }}</h1>
+<td>
+    {% if article.upload %}
+<img src="{{ article.upload.url }}" alt="My Image" style="height: 300px; width: 300px">
+    {% else %}
+<p>No image available</p>
+    {% endif %}
+</td>
+
+  <a class="btn" href="{% url 'all_comments' pk=article.pk %}"><button class="btn btn-light btn-outline-danger">Посмотреть комментарии</button></a>
+  <a class="btn" href="{% url 'comment_create' pk=article.pk %}"><button class="btn btn-light btn-outline-danger">Написать комментарий</button></a>
+
+
+
+
+{% endblock content %}
+
+
